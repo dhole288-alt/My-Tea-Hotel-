@@ -1,0 +1,6 @@
+{
+  "name": "Prakash Dhole Tea Hotel",
+  "description": "Luxurious 5-star style Indian tea stall and chai café owned by Prakash Vitthal Dhole at Nave Dhagur, Dindori, Nashik. Features online ordering, table reservations, and admin control.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
