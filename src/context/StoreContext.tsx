@@ -111,7 +111,7 @@ const LOCAL_STORAGE_KEY_BOOKINGS = 'royal_chai_bookings_v1';
 const LOCAL_STORAGE_KEY_ENQUIRIES = 'royal_chai_enquiries_v1';
 const LOCAL_STORAGE_KEY_REVIEWS = 'royal_chai_reviews_v1';
 const LOCAL_STORAGE_KEY_OFFERS = 'royal_chai_offers_v1';
-const LOCAL_STORAGE_KEY_SETTINGS = 'prakash_dhole_tea_hotel_settings_v2';
+const LOCAL_STORAGE_KEY_SETTINGS = 'bala_jadhav_tea_hotel_settings_v3';
 const LOCAL_STORAGE_KEY_ADMIN = 'royal_chai_admin_logged_v1';
 
 export const StoreProvider: React.FC<{ children: ReactNode }> = ({ children }) => {

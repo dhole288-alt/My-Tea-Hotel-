@@ -1,16 +1,16 @@
 import { Product, Combo, Review, Offer, BusinessSettings } from '../types';
 
 export const initialBusinessSettings: BusinessSettings = {
-  name: "PRAKASH DHOLE TEA HOTEL",
+  name: "BALA JADHAV TEA HOTEL",
   tagline: "Not Just Tea — An Experience",
-  phone: "+91 80552 39255",
-  whatsapp: "918055239255",
-  email: "prakashdhole8055@gmail.com",
-  address: "At Nave Dhagur, Post Dari, Tal Dindori, Dist Nashik, Maharashtra - 422003",
+  phone: "+91 80102 71280",
+  whatsapp: "918010271280",
+  email: "balajadhav8010@gmail.com",
+  address: "At Post Harsul, Taluka Trimbakeshwar, Dist Nashik, Maharashtra",
   openingHours: "Monday – Sunday: 6:00 AM – 11:00 PM",
-  upiId: "8055239255@upi",
+  upiId: "8010271280@upi",
   currencySymbol: "₹",
-  googleMapsEmbedUrl: "https://maps.google.com/maps?q=Nave%20Dhagur%20Dari%20Dindori%20Nashik%20Maharashtra%20422003&t=&z=13&ie=UTF8&iwloc=&output=embed"
+  googleMapsEmbedUrl: "https://maps.google.com/maps?q=Harsul%20Trimbakeshwar%20Nashik%20Maharashtra&t=&z=13&ie=UTF8&iwloc=&output=embed"
 };
 
 export const signatureChais: Product[] = [

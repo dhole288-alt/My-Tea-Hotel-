@@ -74,7 +74,7 @@ export const AboutSection: React.FC = () => {
             </h2>
 
             <p className="text-stone-300 text-sm sm:text-base font-light leading-relaxed">
-              In India, chai is not merely a hot drink — it is an emotion, a conversation starter, a morning ritual, and an afternoon sanctuary. Owned and managed by <strong className="text-amber-300 font-semibold">Prakash Vitthal Dhole</strong> at {settings.name}, we set out to elevate this beloved ritual into a 5-star culinary experience at Nave Dhagur, Dindori.
+              In India, chai is not merely a hot drink — it is an emotion, a conversation starter, a morning ritual, and an afternoon sanctuary. Owned and managed by <strong className="text-amber-300 font-semibold">Bala Jadhav</strong> at {settings.name}, we set out to elevate this beloved ritual into a 5-star culinary experience at Harsul, Trimbakeshwar.
             </p>
 
             <p className="text-stone-400 text-sm font-light leading-relaxed">
