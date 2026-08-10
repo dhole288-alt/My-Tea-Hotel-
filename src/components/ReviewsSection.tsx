@@ -100,13 +100,15 @@ export const ReviewsSection: React.FC = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md p-4 flex items-center justify-center"
+            onClick={() => setIsModalOpen(false)}
+            className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md p-4 flex items-center justify-center cursor-pointer"
           >
             <motion.div
               initial={{ scale: 0.9, y: 20 }}
               animate={{ scale: 1, y: 0 }}
               exit={{ scale: 0.9, y: 20 }}
-              className="w-full max-w-lg rounded-3xl bg-stone-900 border border-amber-500/30 p-6 sm:p-8 shadow-2xl space-y-6 relative"
+              onClick={(e) => e.stopPropagation()}
+              className="w-full max-w-lg rounded-3xl bg-stone-900 border border-amber-500/30 p-6 sm:p-8 shadow-2xl space-y-6 relative cursor-default"
             >
               <button
                 onClick={() => setIsModalOpen(false)}

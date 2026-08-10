@@ -78,14 +78,16 @@ export const CartDrawer: React.FC = () => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex justify-end"
+        onClick={closeDrawer}
+        className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex justify-end cursor-pointer"
       >
         <motion.div
           initial={{ x: '100%' }}
           animate={{ x: 0 }}
           exit={{ x: '100%' }}
           transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-          className="w-full max-w-md bg-stone-950 border-l border-amber-500/30 h-full flex flex-col justify-between shadow-2xl relative"
+          onClick={(e) => e.stopPropagation()}
+          className="w-full max-w-md bg-stone-950 border-l border-amber-500/30 h-full flex flex-col justify-between shadow-2xl relative cursor-default"
         >
           {/* Header */}
           <div className="p-5 border-b border-stone-800 flex items-center justify-between bg-stone-900/90">

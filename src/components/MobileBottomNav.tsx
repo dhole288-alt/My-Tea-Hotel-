@@ -13,7 +13,7 @@ export const MobileBottomNav: React.FC = () => {
   };
 
   const whatsappUrl = `https://wa.me/${settings.whatsapp}?text=${encodeURIComponent(
-    'Hello Royal Chai Co., I would like to order!'
+    `Hello ${settings.name}, I would like to order!`
   )}`;
 
   return (

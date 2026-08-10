@@ -114,9 +114,13 @@ export const AdminDashboard: React.FC = () => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        className="fixed inset-0 z-50 bg-black/90 backdrop-blur-2xl p-4 md:p-8 flex items-center justify-center overflow-y-auto"
+        onClick={() => setIsAdminModalOpen(false)}
+        className="fixed inset-0 z-50 bg-black/90 backdrop-blur-2xl p-4 md:p-8 flex items-center justify-center overflow-y-auto cursor-pointer"
       >
-        <div className="w-full max-w-6xl bg-stone-950 border border-amber-500/30 rounded-3xl shadow-2xl overflow-hidden flex flex-col my-auto max-h-[90vh]">
+        <div
+          onClick={(e) => e.stopPropagation()}
+          className="w-full max-w-6xl bg-stone-950 border border-amber-500/30 rounded-3xl shadow-2xl overflow-hidden flex flex-col my-auto max-h-[90vh] cursor-default"
+        >
           
           {/* Top Admin Header */}
           <div className="p-5 bg-stone-900 border-b border-stone-800 flex items-center justify-between">
