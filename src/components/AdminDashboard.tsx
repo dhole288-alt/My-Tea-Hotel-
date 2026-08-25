@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useStore } from '../context/StoreContext';
 import { Product, OrderStatus, CategoryType } from '../types';
 import { 
@@ -142,13 +142,27 @@ export const AdminDashboard: React.FC<{ isModalMode?: boolean; onCloseModal?: ()
     }
   };
 
-  // Derived metrics
-  const totalRevenue = orders.reduce((sum, o) => o.paymentStatus === 'Paid' ? sum + o.totalAmount : sum, 0);
-  const activeOrdersCount = orders.filter(o => o.status !== 'Completed' && o.status !== 'Cancelled').length;
-  const pendingBookingsCount = bookings.filter(b => b.status === 'Pending' || b.status === 'Confirmed').length;
-  const unreadEnquiriesCount = enquiries.filter(e => e.status === 'Unread').length;
-  const filteredOrders = orderFilter === 'ALL' ? orders : orders.filter(o => o.status === orderFilter);
-  const customers = getCustomersCRM();
+  // Synchronize settings form when remote settings load
+  useEffect(() => {
+    if (settings) {
+      setSettingsForm(settings);
+    }
+  }, [settings]);
+
+  const safeOrders = orders || [];
+  const safeBookings = bookings || [];
+  const safeEnquiries = enquiries || [];
+  const safeProducts = products || [];
+  const safeOffers = offers || [];
+  const safeSettings = settings || { name: 'Prakash Dhole Tea Hotel' };
+
+  // Derived metrics with defensive checks
+  const totalRevenue = safeOrders.reduce((sum, o) => o?.paymentStatus === 'Paid' ? sum + (o?.totalAmount || 0) : sum, 0);
+  const activeOrdersCount = safeOrders.filter(o => o && o.status !== 'Completed' && o.status !== 'Cancelled').length;
+  const pendingBookingsCount = safeBookings.filter(b => b && (b.status === 'Pending' || b.status === 'Confirmed')).length;
+  const unreadEnquiriesCount = safeEnquiries.filter(e => e && e.status === 'Unread').length;
+  const filteredOrders = orderFilter === 'ALL' ? safeOrders : safeOrders.filter(o => o && o.status === orderFilter);
+  const customers = typeof getCustomersCRM === 'function' ? getCustomersCRM() : [];
 
   return (
     <div className={`min-h-screen bg-stone-950 text-stone-100 flex flex-col font-sans selection:bg-amber-500 selection:text-black ${isModalMode ? 'p-0' : ''}`}>
@@ -180,7 +194,7 @@ export const AdminDashboard: React.FC<{ isModalMode?: boolean; onCloseModal?: ()
               <div>
                 <div className="flex items-center gap-2">
                   <h1 className="font-serif font-bold text-sm sm:text-base text-white tracking-wide">
-                    {settings.name} Admin
+                    {safeSettings.name || 'Prakash Dhole Tea Hotel'} Admin
                   </h1>
                   <span className="px-2 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-[10px] font-bold text-emerald-400 flex items-center gap-1">
                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
@@ -362,7 +376,7 @@ export const AdminDashboard: React.FC<{ isModalMode?: boolean; onCloseModal?: ()
                             </span>
                           </div>
                           <p className="text-[11px] text-stone-400 mt-1">
-                            {order.items.map(i => `${i.quantity}x ${i.product.name}`).join(', ')}
+                            {(order.items || []).map(i => `${i?.quantity || 1}x ${i?.product?.name || 'Chai'}`).join(', ')}
                           </p>
                         </div>
 
@@ -456,10 +470,10 @@ export const AdminDashboard: React.FC<{ isModalMode?: boolean; onCloseModal?: ()
                         <div className="space-y-1">
                           <span className="text-[10px] uppercase tracking-wider text-stone-500 font-semibold">Ordered Items:</span>
                           <ul className="space-y-1">
-                            {order.items.map((it, idx) => (
+                            {(order.items || []).map((it, idx) => (
                               <li key={idx} className="text-stone-300 flex justify-between">
-                                <span>{it.quantity}x {it.product.name}</span>
-                                <span className="text-stone-400 font-mono">₹{it.product.price * it.quantity}</span>
+                                <span>{it?.quantity || 1}x {it?.product?.name || 'Item'}</span>
+                                <span className="text-stone-400 font-mono">₹{(it?.product?.price || 0) * (it?.quantity || 1)}</span>
                               </li>
                             ))}
                           </ul>

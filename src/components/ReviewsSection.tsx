@@ -76,7 +76,9 @@ export const ReviewsSection: React.FC = () => {
                   <div className="font-serif font-bold text-sm text-white flex items-center gap-1.5">
                     <span>{rev.customerName}</span>
                     {rev.verifiedCustomer && (
-                      <CheckCircle className="w-3.5 h-3.5 text-emerald-400 shrink-0" title="Verified Guest" />
+                      <span title="Verified Guest">
+                        <CheckCircle className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                      </span>
                     )}
                   </div>
                   {rev.favoriteTea && (

@@ -148,17 +148,29 @@ const LOCAL_STORAGE_KEY_REVIEWS = 'royal_chai_reviews_v2';
 const LOCAL_STORAGE_KEY_OFFERS = 'royal_chai_offers_v2';
 const LOCAL_STORAGE_KEY_SETTINGS = 'bala_jadhav_tea_hotel_settings_v4';
 
+function normalizeRoutePath(rawPath: string): string {
+  if (!rawPath) return '/';
+  let clean = rawPath.split('?')[0].split('#')[0].trim();
+  clean = clean.replace(/\/+$/, '') || '/';
+  return clean;
+}
+
 function getInitialRoute(): string {
   if (typeof window === 'undefined') return '/';
-  const pathname = window.location.pathname;
+  const rawPath = window.location.pathname;
   const hash = window.location.hash;
 
-  if (pathname.startsWith('/admin') || pathname === '/admin' || pathname === '/admin/login' || pathname === '/admin/dashboard') {
+  if (hash) {
+    const cleanHash = hash.replace(/^#\/?/, '').split('?')[0].trim();
+    if (cleanHash === 'admin' || cleanHash === 'admin/dashboard') return '/admin/dashboard';
+    if (cleanHash === 'admin/login') return '/admin/login';
+    if (cleanHash.startsWith('admin/')) return `/${cleanHash}`;
+  }
+
+  const pathname = normalizeRoutePath(rawPath);
+  if (pathname === '/admin' || pathname === '/admin/login' || pathname === '/admin/dashboard' || pathname.startsWith('/admin/')) {
     return pathname;
   }
-  if (hash === '#admin' || hash === '#/admin') return '/admin';
-  if (hash === '#admin/login' || hash === '#/admin/login') return '/admin/login';
-  if (hash === '#admin/dashboard' || hash === '#/admin/dashboard') return '/admin/dashboard';
   return '/';
 }
 
@@ -312,30 +324,46 @@ export const StoreProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     };
   }, []);
 
-  // Firebase Auth State Observer
+  // Firebase Auth State Observer with safety timeout
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user: FirebaseUser | null) => {
-      if (user) {
-        const adminProfile: FirebaseAdminUser = {
-          uid: user.uid,
-          email: user.email,
-          displayName: user.displayName || user.email?.split('@')[0] || 'Admin',
-          photoURL: user.photoURL,
-          emailVerified: user.emailVerified,
-          createdAt: user.metadata.creationTime,
-          lastLoginAt: user.metadata.lastSignInTime
-        };
-        setAdminUser(adminProfile);
-        setIsAdminLoggedIn(true);
-        setAuthError(null);
-      } else {
-        setAdminUser(null);
-        setIsAdminLoggedIn(false);
-      }
+    const safetyTimer = setTimeout(() => {
       setAuthLoading(false);
-    });
+    }, 2500);
 
-    return () => unsubscribe();
+    const unsubscribe = onAuthStateChanged(
+      auth,
+      (user: FirebaseUser | null) => {
+        clearTimeout(safetyTimer);
+        if (user) {
+          const adminProfile: FirebaseAdminUser = {
+            uid: user.uid,
+            email: user.email,
+            displayName: user.displayName || user.email?.split('@')[0] || 'Admin',
+            photoURL: user.photoURL,
+            emailVerified: user.emailVerified,
+            createdAt: user.metadata.creationTime,
+            lastLoginAt: user.metadata.lastSignInTime
+          };
+          setAdminUser(adminProfile);
+          setIsAdminLoggedIn(true);
+          setAuthError(null);
+        } else {
+          setAdminUser(null);
+          setIsAdminLoggedIn(false);
+        }
+        setAuthLoading(false);
+      },
+      (error) => {
+        clearTimeout(safetyTimer);
+        console.error('Firebase Auth state error:', error);
+        setAuthLoading(false);
+      }
+    );
+
+    return () => {
+      clearTimeout(safetyTimer);
+      unsubscribe();
+    };
   }, []);
 
   // Route protection and redirection effect
