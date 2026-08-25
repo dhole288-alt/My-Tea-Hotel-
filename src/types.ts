@@ -117,3 +117,26 @@ export interface CustomerCRM {
   lastOrderDate: string;
   status: 'VIP' | 'Regular' | 'New';
 }
+
+export interface FirebaseAdminUser {
+  uid: string;
+  email: string | null;
+  displayName: string | null;
+  photoURL?: string | null;
+  emailVerified: boolean;
+  createdAt?: string;
+  lastLoginAt?: string;
+}
+
+export interface SalesforceAdminUser {
+  userId: string;
+  username: string;
+  name: string;
+  email: string;
+  orgId?: string;
+  userType?: string;
+  roleTitle?: string;
+  authenticatedAt: string;
+  authMethod: 'salesforce_oauth_2.0';
+}
+

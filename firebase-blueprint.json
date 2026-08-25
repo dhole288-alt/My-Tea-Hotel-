@@ -1,0 +1,82 @@
+{
+  "entities": {
+    "products": {
+      "title": "Products",
+      "description": "Menu items and beverage catalog",
+      "fields": {
+        "name": { "type": "string", "description": "Item name" },
+        "category": { "type": "string", "description": "Tea, Coffee, Snacks, etc." },
+        "description": { "type": "string", "description": "Item description" },
+        "price": { "type": "number", "description": "Price in INR" },
+        "image": { "type": "string", "description": "Image URL" },
+        "isVeg": { "type": "boolean", "description": "Vegetarian flag" },
+        "isBestseller": { "type": "boolean", "description": "Bestseller flag" },
+        "isAvailable": { "type": "boolean", "description": "Availability status" }
+      }
+    },
+    "orders": {
+      "title": "Orders",
+      "description": "Customer food & chai orders",
+      "fields": {
+        "customerName": { "type": "string", "description": "Customer name" },
+        "customerPhone": { "type": "string", "description": "Customer phone" },
+        "orderType": { "type": "string", "description": "Delivery, Pickup, Dine-In" },
+        "totalAmount": { "type": "number", "description": "Total amount in INR" },
+        "status": { "type": "string", "description": "Order status" },
+        "paymentMethod": { "type": "string", "description": "UPI, Cash, Counter" },
+        "createdAt": { "type": "string", "description": "ISO timestamp" }
+      }
+    },
+    "bookings": {
+      "title": "Table Bookings",
+      "description": "Lounge and table reservations",
+      "fields": {
+        "customerName": { "type": "string", "description": "Customer name" },
+        "customerPhone": { "type": "string", "description": "Customer phone" },
+        "date": { "type": "string", "description": "Booking date" },
+        "time": { "type": "string", "description": "Booking time" },
+        "guests": { "type": "number", "description": "Number of guests" },
+        "status": { "type": "string", "description": "Pending, Confirmed, Cancelled" }
+      }
+    },
+    "enquiries": {
+      "title": "Enquiries",
+      "description": "Contact form submissions and event inquiries",
+      "fields": {
+        "name": { "type": "string", "description": "Sender name" },
+        "phone": { "type": "string", "description": "Sender phone" },
+        "email": { "type": "string", "description": "Sender email" },
+        "message": { "type": "string", "description": "Message content" }
+      }
+    },
+    "reviews": {
+      "title": "Reviews",
+      "description": "Customer ratings and testimonials",
+      "fields": {
+        "customerName": { "type": "string", "description": "Customer name" },
+        "rating": { "type": "number", "description": "Rating out of 5" },
+        "comment": { "type": "string", "description": "Customer feedback" }
+      }
+    },
+    "offers": {
+      "title": "Offers",
+      "description": "Promotional coupon codes and discounts",
+      "fields": {
+        "title": { "type": "string", "description": "Offer title" },
+        "code": { "type": "string", "description": "Promo coupon code" },
+        "discountPercentage": { "type": "number", "description": "Discount percentage" }
+      }
+    },
+    "settings": {
+      "title": "Business Settings",
+      "description": "Cafe contact, operating hours, and payment configurations",
+      "fields": {
+        "name": { "type": "string", "description": "Cafe name" },
+        "phone": { "type": "string", "description": "Phone number" },
+        "whatsapp": { "type": "string", "description": "WhatsApp number" },
+        "upiId": { "type": "string", "description": "UPI ID" },
+        "address": { "type": "string", "description": "Physical address" }
+      }
+    }
+  }
+}

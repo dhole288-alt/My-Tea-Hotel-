@@ -3,7 +3,7 @@ import { useStore } from '../context/StoreContext';
 import { ShoppingBag, MessageCircle, Menu as MenuIcon, X, Crown, Shield, PhoneCall } from 'lucide-react';
 
 export const Navbar: React.FC = () => {
-  const { cartCount, settings, setIsCartOpen, setIsAdminModalOpen, isAdminLoggedIn } = useStore();
+  const { cartCount, settings, setIsCartOpen, isAdminLoggedIn, navigateTo } = useStore();
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -130,7 +130,7 @@ export const Navbar: React.FC = () => {
 
             {/* Admin Portal Toggle */}
             <button
-              onClick={() => setIsAdminModalOpen(true)}
+              onClick={() => navigateTo(isAdminLoggedIn ? '/admin/dashboard' : '/admin/login')}
               className={`p-2 rounded-xl border transition-all text-xs font-medium flex items-center gap-1 ${
                 isAdminLoggedIn
                   ? 'bg-amber-500/20 border-amber-500 text-amber-300'
@@ -208,7 +208,7 @@ export const Navbar: React.FC = () => {
               <button
                 onClick={() => {
                   setMobileMenuOpen(false);
-                  setIsAdminModalOpen(true);
+                  navigateTo(isAdminLoggedIn ? '/admin/dashboard' : '/admin/login');
                 }}
                 className="w-full py-2.5 rounded-xl bg-stone-900 text-stone-300 border border-stone-800 text-xs flex items-center justify-center gap-2"
               >

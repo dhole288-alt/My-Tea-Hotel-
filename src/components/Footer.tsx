@@ -3,7 +3,7 @@ import { useStore } from '../context/StoreContext';
 import { Crown, Heart, MessageCircle, Phone, MapPin, Shield } from 'lucide-react';
 
 export const Footer: React.FC = () => {
-  const { settings, setIsAdminModalOpen } = useStore();
+  const { settings, isAdminLoggedIn, navigateTo } = useStore();
 
   const scrollToSection = (id: string) => {
     const el = document.querySelector(id);
@@ -89,11 +89,11 @@ export const Footer: React.FC = () => {
             </div>
 
             <button
-              onClick={() => setIsAdminModalOpen(true)}
+              onClick={() => navigateTo(isAdminLoggedIn ? '/admin/dashboard' : '/admin/login')}
               className="mt-2 py-2 px-3 rounded-lg bg-stone-900 border border-amber-500/30 text-amber-300 text-xs font-bold uppercase flex items-center gap-1.5 hover:bg-amber-500 hover:text-black transition-all"
             >
               <Shield className="w-3.5 h-3.5" />
-              <span>ADMIN DASHBOARD LOGIN</span>
+              <span>{isAdminLoggedIn ? 'ADMIN DASHBOARD' : 'ADMIN DASHBOARD LOGIN'}</span>
             </button>
           </div>
 

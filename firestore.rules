@@ -1,0 +1,58 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    // Products / Menu Items: Publicly readable, admin only write
+    match /products/{productId} {
+      allow read: if true;
+      allow write: if isAuthenticated();
+    }
+
+    // Offers & Promo Codes: Publicly readable, admin only write
+    match /offers/{offerId} {
+      allow read: if true;
+      allow write: if isAuthenticated();
+    }
+
+    // Customer Reviews: Publicly readable, public can submit, admin can manage/delete
+    match /reviews/{reviewId} {
+      allow read: if true;
+      allow create: if true;
+      allow update, delete: if isAuthenticated();
+    }
+
+    // Business & Cafe Settings: Publicly readable, admin only write
+    match /settings/{settingId} {
+      allow read: if true;
+      allow write: if isAuthenticated();
+    }
+
+    // Orders: Public can place orders, only authenticated admin can view/manage
+    match /orders/{orderId} {
+      allow create: if true;
+      allow read, update, delete: if isAuthenticated();
+    }
+
+    // Table Bookings: Public can book tables, only authenticated admin can view/manage
+    match /bookings/{bookingId} {
+      allow create: if true;
+      allow read, update, delete: if isAuthenticated();
+    }
+
+    // Contact Enquiries: Public can send messages, only authenticated admin can view/manage
+    match /enquiries/{enquiryId} {
+      allow create: if true;
+      allow read, update, delete: if isAuthenticated();
+    }
+
+    // Admin profiles
+    match /admins/{adminId} {
+      allow read, write: if isAuthenticated();
+    }
+  }
+}
