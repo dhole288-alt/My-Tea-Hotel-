@@ -2,12 +2,10 @@ import React, { createContext, useContext, useState, useEffect, useCallback, Rea
 import confetti from 'canvas-confetti';
 import { 
   signInWithEmailAndPassword, 
-  createUserWithEmailAndPassword, 
   sendPasswordResetEmail, 
   signOut, 
   onAuthStateChanged,
-  User as FirebaseUser,
-  updateProfile
+  User as FirebaseUser
 } from 'firebase/auth';
 import { 
   collection, 
@@ -585,38 +583,11 @@ export const StoreProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     }
   };
 
-  const signupAdmin = async (email: string, pass: string, displayName?: string) => {
-    setAuthError(null);
-    try {
-      const userCredential = await createUserWithEmailAndPassword(auth, email.trim(), pass);
-      const user = userCredential.user;
-
-      if (displayName) {
-        await updateProfile(user, { displayName });
-      }
-
-      // Save admin profile in Firestore
-      await setDoc(doc(db, 'admins', user.uid), {
-        uid: user.uid,
-        email: user.email,
-        displayName: displayName || user.email?.split('@')[0],
-        role: 'Owner',
-        createdAt: new Date().toISOString()
-      });
-
-      showToast(`Admin account created for ${user.email}! Logged in successfully.`, 'success');
-      confetti({
-        particleCount: 60,
-        spread: 70,
-        origin: { y: 0.6 }
-      });
-      navigateTo('/admin/dashboard');
-    } catch (err: any) {
-      const errMsg = mapAuthError(err.code || '');
-      setAuthError(errMsg);
-      showToast(errMsg, 'error');
-      throw err;
-    }
+  const signupAdmin = async (_email: string, _pass: string, _displayName?: string) => {
+    const errMsg = 'Public admin registration is closed for production security. Please sign in with your Owner credentials.';
+    setAuthError(errMsg);
+    showToast(errMsg, 'error');
+    throw new Error(errMsg);
   };
 
   const resetAdminPassword = async (email: string) => {

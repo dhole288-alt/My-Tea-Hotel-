@@ -1,15 +1,14 @@
 import React, { useState } from 'react';
 import { useStore } from '../context/StoreContext';
 import { 
-  Lock, Mail, KeyRound, Shield, Eye, EyeOff, 
-  ArrowLeft, CheckCircle2, AlertCircle, Loader2, Sparkles, Database
+  Lock, Mail, Shield, Eye, EyeOff, 
+  ArrowLeft, CheckCircle2, AlertCircle, Loader2
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
 export const AdminLogin: React.FC = () => {
   const { 
     loginAdmin, 
-    signupAdmin, 
     resetAdminPassword, 
     authLoading, 
     authError, 
@@ -18,10 +17,9 @@ export const AdminLogin: React.FC = () => {
     navigateTo 
   } = useStore();
 
-  const [mode, setMode] = useState<'login' | 'signup' | 'forgot'>('login');
+  const [mode, setMode] = useState<'login' | 'forgot'>('login');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [displayName, setDisplayName] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [forgotSuccess, setForgotSuccess] = useState(false);
@@ -37,9 +35,6 @@ export const AdminLogin: React.FC = () => {
       if (mode === 'login') {
         if (!password) return;
         await loginAdmin(email, password);
-      } else if (mode === 'signup') {
-        if (!password) return;
-        await signupAdmin(email, password, displayName || undefined);
       } else if (mode === 'forgot') {
         await resetAdminPassword(email);
         setForgotSuccess(true);
@@ -67,9 +62,9 @@ export const AdminLogin: React.FC = () => {
           <span>Back to Storefront</span>
         </button>
 
-        <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-[11px] font-medium text-amber-300">
-          <Database className="w-3 h-3 text-amber-400" />
-          <span>Firebase Auth</span>
+        <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-[11px] font-medium text-emerald-400">
+          <Shield className="w-3 h-3 text-emerald-400" />
+          <span>Protected Area</span>
         </div>
       </div>
 
@@ -86,50 +81,25 @@ export const AdminLogin: React.FC = () => {
             <Shield className="w-7 h-7 text-amber-400" />
           </div>
           <h1 className="text-xl sm:text-2xl font-serif font-bold text-white tracking-wide">
-            {mode === 'login' && 'Owner / Admin Login'}
-            {mode === 'signup' && 'Register Admin Account'}
+            {mode === 'login' && 'Owner / Admin Portal'}
             {mode === 'forgot' && 'Reset Admin Password'}
           </h1>
           <p className="text-xs text-stone-400 leading-relaxed max-w-xs mx-auto">
-            {mode === 'login' && 'Secure Email & Password authentication backed by Firebase Auth & Firestore.'}
-            {mode === 'signup' && 'Create your administrator account for managing orders, menu & bookings.'}
-            {mode === 'forgot' && 'Enter your admin email to receive a password reset link.'}
+            {mode === 'login' && 'Authorized personnel only. Public registration is disabled.'}
+            {mode === 'forgot' && 'Enter your registered Owner/Admin email to receive a password reset link.'}
           </p>
         </div>
 
-        {/* Tab switchers: Login vs Setup */}
-        {mode !== 'forgot' && (
-          <div className="grid grid-cols-2 p-1 rounded-xl bg-stone-950 border border-stone-800 text-xs font-semibold">
-            <button
-              type="button"
-              onClick={() => {
-                setMode('login');
-                clearAuthError();
-              }}
-              className={`py-2 rounded-lg transition-all ${
-                mode === 'login'
-                  ? 'bg-amber-500 text-black shadow-md font-bold'
-                  : 'text-stone-400 hover:text-stone-200'
-              }`}
-            >
-              Admin Login
-            </button>
-            <button
-              type="button"
-              onClick={() => {
-                setMode('signup');
-                clearAuthError();
-              }}
-              className={`py-2 rounded-lg transition-all ${
-                mode === 'signup'
-                  ? 'bg-amber-500 text-black shadow-md font-bold'
-                  : 'text-stone-400 hover:text-stone-200'
-              }`}
-            >
-              Create Account
-            </button>
+        {/* Security Alert Banner */}
+        <div className="p-2.5 rounded-xl bg-stone-950/80 border border-stone-800 text-[11px] text-stone-400 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <Lock className="w-3.5 h-3.5 text-amber-400 shrink-0" />
+            <span>Firebase Email/Password Auth</span>
           </div>
-        )}
+          <span className="text-[10px] font-semibold text-stone-400 uppercase tracking-wider">
+            Private Access
+          </span>
+        </div>
 
         {/* Error Alert Box */}
         <AnimatePresence>
@@ -165,34 +135,12 @@ export const AdminLogin: React.FC = () => {
               }}
               className="mt-2 w-full py-2 px-4 rounded-lg bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 text-xs font-bold border border-emerald-500/30 transition-all"
             >
-              Return to Login
+              Return to Admin Sign In
             </button>
           </div>
         ) : (
           /* Form */
           <form onSubmit={handleSubmit} className="space-y-4">
-            {/* Display Name (only in signup mode) */}
-            {mode === 'signup' && (
-              <div className="space-y-1.5">
-                <label className="block text-xs font-semibold uppercase tracking-wider text-stone-300">
-                  Full Name / Admin Title
-                </label>
-                <div className="relative">
-                  <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-stone-500">
-                    <Sparkles className="w-4 h-4" />
-                  </div>
-                  <input
-                    type="text"
-                    required
-                    value={displayName}
-                    onChange={(e) => setDisplayName(e.target.value)}
-                    placeholder="e.g. Bala Jadhav (Owner)"
-                    className="w-full pl-10 pr-3.5 py-2.5 bg-stone-950 border border-stone-800 focus:border-amber-500 focus:ring-1 focus:ring-amber-500 rounded-xl text-xs text-white placeholder-stone-600 transition-all outline-none"
-                  />
-                </div>
-              </div>
-            )}
-
             {/* Email Field */}
             <div className="space-y-1.5">
               <label className="block text-xs font-semibold uppercase tracking-wider text-stone-300">
@@ -214,25 +162,23 @@ export const AdminLogin: React.FC = () => {
               </div>
             </div>
 
-            {/* Password Field (for login & signup) */}
-            {mode !== 'forgot' && (
+            {/* Password Field */}
+            {mode === 'login' && (
               <div className="space-y-1.5">
                 <div className="flex items-center justify-between">
                   <label className="block text-xs font-semibold uppercase tracking-wider text-stone-300">
                     Password
                   </label>
-                  {mode === 'login' && (
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setMode('forgot');
-                        clearAuthError();
-                      }}
-                      className="text-[11px] text-amber-400 hover:text-amber-300 hover:underline transition-colors"
-                    >
-                      Forgot Password?
-                    </button>
-                  )}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setMode('forgot');
+                      clearAuthError();
+                    }}
+                    className="text-[11px] text-amber-400 hover:text-amber-300 hover:underline transition-colors"
+                  >
+                    Forgot Password?
+                  </button>
                 </div>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-stone-500">
@@ -242,7 +188,7 @@ export const AdminLogin: React.FC = () => {
                     type={showPassword ? 'text' : 'password'}
                     required
                     minLength={6}
-                    autoComplete={mode === 'login' ? 'current-password' : 'new-password'}
+                    autoComplete="current-password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="••••••••••••"
@@ -276,15 +222,10 @@ export const AdminLogin: React.FC = () => {
                   <Lock className="w-4 h-4" />
                   <span>Secure Admin Sign In</span>
                 </>
-              ) : mode === 'signup' ? (
-                <>
-                  <KeyRound className="w-4 h-4" />
-                  <span>Create Admin Account</span>
-                </>
               ) : (
                 <>
                   <Mail className="w-4 h-4" />
-                  <span>Send Reset Email</span>
+                  <span>Send Reset Link</span>
                 </>
               )}
             </button>
@@ -322,3 +263,4 @@ export const AdminLogin: React.FC = () => {
     </div>
   );
 };
+
